@@ -1,21 +1,65 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
-// students displays a list of open sections for a 
-// use the URL /sections/open
-// the REST api returns a list of SectionDTO objects
+const CourseEnroll = () => {
+    const [sections, setSections] = useState([]);
+    const [selectedSection, setSelectedSection] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-// the student can select a section and enroll
-// issue a POST with the URL /enrollments/sections/{secNo}?studentId=3
-// studentId=3 will be removed in assignment 7.
+    useEffect(() => {
+        fetch('http://localhost:8080/sections/open')
+            .then(response => response.json())
+            .then(data => {
+                setSections(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error);
+                setLoading(false);
+            });
+    }, []);
 
-const CourseEnroll = (props) => {
-     
- 
-    return(
-        <>
-           <h3>Not implemented</h3>
-        </>
+    const enrollInSection = (sectionNo) => {
+        fetch(`http://localhost:8080/enrollments/sections/${sectionNo}?studentId=3`, {
+            method: 'POST',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to enroll in section');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Enrolled successfully!');
+                setSelectedSection(null);
+            })
+            .catch(error => {
+                setError(error);
+                alert('Failed to enroll in section');
+            });
+    };
+
+    if (loading) {
+        return <p>Loading sections...</p>;
+    }
+
+    if (error) {
+        return <p>Error loading sections: {error.message}</p>;
+    }
+
+    return (
+        <div>
+            <h3>Course Enrollment</h3>
+            <ul>
+                {sections.map((section) => (
+                    <li key={section.secNo}>
+                        {section.courseId} - {section.title} - {section.instructorName}
+                        <button onClick={() => enrollInSection(section.secNo)}>Enroll</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
-}
+};
 
 export default CourseEnroll;
