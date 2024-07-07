@@ -14,14 +14,14 @@ import InstructorHome from './components/instructor/InstructorHome';
 import AssignmentsView from './components/instructor/AssignmentsView';
 import EnrollmentsView from './components/instructor/EnrollmentsView';
 import InstructorSectionsView from './components/instructor/InstructorSectionsView';
-
+import CourseEnroll from './components/student/CourseEnroll.js';
 
 function App() {
 
-  // change to INSTRUCTOR or STUDENT for testing.  
+  // change to INSTRUCTOR or STUDENT for testing.
   // when login is implemented, the user type will come from the logged in user's ROLE.
 
-  const userType = 'INSTRUCTOR'; // change to INSTRUCTOR or STUDENT for testing.  
+  const userType = 'STUDENT'; // change to INSTRUCTOR or STUDENT for testing.
 
   if (userType==='ADMIN') {
     return (
