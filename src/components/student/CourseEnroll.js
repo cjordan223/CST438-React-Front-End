@@ -9,11 +9,9 @@ import React, {useState, useEffect} from 'react';
 // studentId=3 will be removed in assignment 7.
 
 const CourseEnroll = (props) => {
-     
- 
     return(
         <>
-           <h3>Not implemented</h3>
+        <h3>Not implemented</h3>
         </>
     );
 }
