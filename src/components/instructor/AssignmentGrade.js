@@ -26,7 +26,7 @@ const AssignmentGrade = (props) => {
 
     const fetchAssignmentGrades = async () => {
         try {
-            const response = await fetch(`${SERVER_URL}/assignments/${props.assignment.id}/grades`);
+            const response = await fetch(`${SERVER_URL}/assignments/1/grades`);
             if (response.ok) {
                 const gradeData = await response.json();
                 setGrades(gradeData);
@@ -41,7 +41,12 @@ const AssignmentGrade = (props) => {
 
     const handleGradeChange = (idx, event) => {
         const { name, value } = event.target;
-        const updatedGrades = [...grades];
+        const updatedGrades = grades.map((grade, index) => {
+            if (index === idx) {
+                return { ...grade, [name]: value };
+            }
+            return grade;
+        });
         updatedGrades[idx][name] = value;
         setGrades(updatedGrades);
     }
