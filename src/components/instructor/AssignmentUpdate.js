@@ -9,7 +9,7 @@ const AssignmentUpdate = (props)  => {
 
   const[isOpen, setOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [assignment, setAssignment] = useState({assignmentId:'', title:'', dueDate:'', sectNo:''})
+  const [assignment, setAssignment] = useState({id:'', title:'', dueDate:'', secId:''})
 
   const editOpen = () => {
     setOpen(true);
@@ -26,7 +26,7 @@ const AssignmentUpdate = (props)  => {
   }
 
   const onSave = () => {
-    if (assignment.title==='' || assignment.dueDate==='' || assignment.sectNo==='') {
+    if (assignment.title==='' || assignment.dueDate==='' || assignment.secId==='') {
       setMessage("Please fill in all fields");
     } else {
       props.save(assignment);
@@ -41,10 +41,10 @@ const AssignmentUpdate = (props)  => {
             <DialogTitle> Edit Assignment </DialogTitle>
             <DialogContent style={{paddingTop: 20}}>
               <h4>{message}</h4>
-              <TextField style={{padding: 10}} fullWidth label="assignmentId" name="assignmentId" value={assignment.assignmentId} InputProps={{readOnly: true, }} />
+              <TextField style={{padding: 10}} fullWidth label="id" name="id" value={assignment.id} InputProps={{readOnly: true, }} />
               <TextField style={{padding: 10}} autoFocus fullWidth label="title" name='title' value={assignment.title} onChange={editChange} />
               <TextField style={{padding: 10}} fullWidth label="dueDate" name="dueDate" value={assignment.dueDate} onChange={editChange} />
-              <TextField style={{padding: 10}} fullWidth label="sectNo" name='sectNo' value={assignment.sectNo} onChange={editChange} />
+              <TextField style={{padding: 10}} fullWidth label="secId" name='secId' value={assignment.secId} onChange={editChange} />
             </DialogContent>
             <DialogActions>
               <Button color='secondary' onClick={editClose}>Close</Button>
