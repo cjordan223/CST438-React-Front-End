@@ -7,6 +7,7 @@ import SectionsView from './components/admin/SectionsView';
 import {AdminHome, AdminLayout} from './components/admin/AdminLayout';
 import {StudentLayout, StudentHome} from './components/student/StudentLayout';
 import ScheduleView from './components/student/ScheduleView';
+import CourseEnroll from './components/student/CourseEnroll';
 import Transcript from './components/student/Transcript';
 import StudentAssignmentsView from './components/student/AssignmentsStudentView';
 import InstructorLayout from './components/instructor/InstructorLayout';
