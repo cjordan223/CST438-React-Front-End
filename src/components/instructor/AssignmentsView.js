@@ -4,6 +4,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { confirmAlert } from 'react-confirm-alert';
 import AssignmentUpdate from './AssignmentUpdate';
 import AssignmentAdd from './AssignmentAdd';
+import AssignmentGrade from './AssignmentGrade';
 import { SERVER_URL } from '../../Constants';
 
 // instructor views assignments for their section
@@ -127,6 +128,7 @@ function AssignmentsView(props) {
         }
     }
 
+
     return(
         <> 
         <h3> Assignment List </h3>
@@ -144,6 +146,7 @@ function AssignmentsView(props) {
                     <td>{assignment.title}</td>
                     <td>{assignment.dueDate}</td>
                     <td>{assignment.secId}</td>
+                    <td><AssignmentGrade assignment={assignment} onSave={onSave} /></td>
                     <td><AssignmentUpdate assignment={assignment} save={onSave}/></td>
                     <td><Button onClick={deleteAlert}>Delete</Button></td>
                 </tr>
