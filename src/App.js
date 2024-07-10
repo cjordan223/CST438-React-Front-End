@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UsersView from './components/admin/UsersView';
 import CoursesView from './components/admin/CoursesView';
@@ -16,10 +16,31 @@ import EnrollmentsView from './components/instructor/EnrollmentsView';
 import InstructorSectionsView from './components/instructor/InstructorSectionsView';
 import CourseEnroll from './components/student/CourseEnroll.js';
 
-function App() {
+const StudentComponent = ({ studentId }) => {
+  const [refresh, setRefresh] = useState(false);
 
+  const handleEnroll = () => {
+    setRefresh(prev => !prev);  // Toggle refresh to trigger re-fetching of schedule
+  };
+
+  return (
+      <div>
+        <Routes>
+          <Route path="/" element={<StudentLayout />}>
+            <Route index element={<StudentHome />} />
+            <Route path="schedule" element={<ScheduleView studentId={studentId} refresh={refresh} />} />
+            <Route path="studentAssignments" element={<StudentAssignmentsView />} />
+            <Route path="transcript" element={<Transcript />} />
+            <Route path="addCourse" element={<CourseEnroll onEnroll={handleEnroll} />} />
+          </Route>
+        </Routes>
+      </div>
+  );
+};
+
+function App() {
   const userType = 'STUDENT'; // change to INSTRUCTOR or STUDENT for testing.
-  const studentId = 3;  
+  const studentId = 3;
 
   if (userType === 'ADMIN') {
     return (
@@ -40,15 +61,7 @@ function App() {
     return (
         <div className="App">
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<StudentLayout />}>
-                <Route index element={<StudentHome />} />
-                <Route path="schedule" element={<ScheduleView studentId={studentId} />} />
-                <Route path="studentAssignments" element={<StudentAssignmentsView />} />
-                <Route path="transcript" element={<Transcript />} />
-                <Route path="addCourse" element={<CourseEnroll />} />
-              </Route>
-            </Routes>
+            <StudentComponent studentId={studentId} />
           </BrowserRouter>
         </div>
     )
@@ -67,10 +80,8 @@ function App() {
           </BrowserRouter>
         </div>
     )
-
   } else {
     return <h1>Unknown user type</h1>
-
   }
 }
 

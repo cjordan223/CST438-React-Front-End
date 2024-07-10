@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const CourseEnroll = () => {
+const CourseEnroll = ({ onEnroll }) => {
     const [sections, setSections] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -38,10 +38,17 @@ const CourseEnroll = () => {
             .then(data => {
                 alert('Enrolled successfully!');
                 setError(null);  // Clear any previous error
+                onEnroll();  // Refresh the schedule after enrollment
             })
             .catch(error => {
                 console.error('Error enrolling in section:', error);
-                setError(error.message);
+                if (error.message.includes('student has already enrolled')) {
+                    alert('Error: Student has already enrolled in this section');
+                } else if (error.message.includes('enrollment date has passed')) {
+                    alert('Error: Enrollment date has passed');
+                } else {
+                    alert(`Error: ${error.message}`);
+                }
             });
     };
 
@@ -57,7 +64,7 @@ const CourseEnroll = () => {
                 {sections.length > 0 ? (
                     sections.map((section) => (
                         <li key={section.secNo}>
-                            {section.courseId} - {section.title} - {section.instructorName}
+                            {section.year} - {section.semester} - {section.courseId} - {section.title} - {section.instructorName}
                             <button onClick={() => enrollInSection(section.secNo)}>Enroll</button>
                         </li>
                     ))

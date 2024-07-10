@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-const ScheduleView = ({ studentId }) => {
+const ScheduleView = ({ studentId, refresh }) => {
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [year, setYear] = useState(2024); // const for testing
     const [semester, setSemester] = useState('Spring'); // const for testing
 
-    useEffect(() => {
+    const fetchSchedule = () => {
         fetch(`http://localhost:8080/enrollments?studentId=${studentId}&year=${year}&semester=${semester}`)
             .then(response => {
                 if (!response.ok) {
@@ -23,7 +23,12 @@ const ScheduleView = ({ studentId }) => {
                 setError(error);
                 setLoading(false);
             });
-    }, [studentId, year, semester]);
+    };
+
+    useEffect(() => {
+        console.log("Fetching schedule...");
+        fetchSchedule();
+    }, [refresh]); // only listen to refresh to trigger refetch
 
     const dropCourse = (enrollmentId) => {
         fetch(`http://localhost:8080/enrollments/${enrollmentId}`, {
@@ -31,15 +36,21 @@ const ScheduleView = ({ studentId }) => {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to drop course');
+                    return response.text().then(text => { throw new Error(text) });
                 }
                 // Remove the dropped course from the schedule
                 setSchedule(schedule.filter(enrollment => enrollment.enrollmentId !== enrollmentId));
+                alert('Course dropped successfully.');
             })
-            //FIX ME
             .catch(error => {
-                console.error('Error dropping course:', error);
-                setError(error);
+                // Won't allow enrollment if past date
+                const errorMessage = error.message;
+                if (errorMessage.includes("drop dead line passed")) {
+                    alert("Error: Drop deadline passed.");
+                } else {
+                    alert(`Error: ${errorMessage}`);
+                }
+                setError(null);  // Do not set error state to prevent re-render
             });
     };
 
