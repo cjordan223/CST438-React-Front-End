@@ -4,11 +4,9 @@ const ScheduleView = ({ studentId, refresh }) => {
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [year, setYear] = useState(2024); // const for testing
-    const [semester, setSemester] = useState('Spring'); // const for testing
 
     const fetchSchedule = () => {
-        fetch(`http://localhost:8080/enrollments?studentId=${studentId}&year=${year}&semester=${semester}`)
+        fetch(`http://localhost:8080/transcripts?studentId=${studentId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch schedule');
@@ -26,7 +24,6 @@ const ScheduleView = ({ studentId, refresh }) => {
     };
 
     useEffect(() => {
-        console.log("Fetching schedule...");
         fetchSchedule();
     }, [refresh]); // only listen to refresh to trigger refetch
 
