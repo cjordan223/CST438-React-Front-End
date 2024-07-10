@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Dialog,DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { SERVER_URL } from '../../Constants';
 
-// complete the code.  
 // instructor adds an assignment to a section
 // use mui Dialog with assignment fields Title and DueDate
 // issue a POST using URL /assignments to add the assignment
@@ -33,24 +32,8 @@ const AssignmentAdd = (props)  => {
         if (assignment.title === '' || assignment.dueDate === '' || assignment.secNo === '') {
             setMessage("Please fill in all fields");
         } else {
-            try {
-                const response = await fetch (`${SERVER_URL}/assignments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(assignment),
-                });
-                if (response.ok) {
-                    const rc = await response.json();
-                    setMessage("section added secNo="+rc.secNo);
-                } else {
-                    const rc = await response.json();
-                    setMessage(rc.message);
-                }
-            } catch (err) {
-              setMessage("network error: "+err);
-            }
+            props.save(assignment);
+            editClose();
         }
     }
 
