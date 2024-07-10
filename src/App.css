@@ -10,7 +10,7 @@
 }
 
 .App-table {
-  margin: auto;
+	margin: auto;
 }
 
 .App-header {
@@ -27,23 +27,3 @@
 .App-link {
   color: #61dafb;
 }
-
-h3 {
-  margin-top: 20px;
-  font-size: 1.5em;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin: 10px 0;
-}
-
-button {
-  margin-left: 10px;
-  padding: 5px 10px;
-}
-
