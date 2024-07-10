@@ -2,19 +2,25 @@ import React, { useState, useEffect } from 'react';
 
 const CourseEnroll = () => {
     const [sections, setSections] = useState([]);
-    const [selectedSection, setSelectedSection] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         fetch('http://localhost:8080/sections/open')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch sections');
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Sections data:', data);
                 setSections(data);
                 setLoading(false);
             })
             .catch(error => {
-                setError(error);
+                console.error('Error fetching sections:', error);
+                setError(error.message);
                 setLoading(false);
             });
     }, []);
@@ -25,17 +31,17 @@ const CourseEnroll = () => {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to enroll in section');
+                    return response.text().then(text => { throw new Error(text) });
                 }
                 return response.json();
             })
             .then(data => {
                 alert('Enrolled successfully!');
-                setSelectedSection(null);
+                setError(null);  // Clear any previous error
             })
             .catch(error => {
-                setError(error);
-                alert('Failed to enroll in section');
+                console.error('Error enrolling in section:', error);
+                setError(error.message);
             });
     };
 
@@ -43,20 +49,21 @@ const CourseEnroll = () => {
         return <p>Loading sections...</p>;
     }
 
-    if (error) {
-        return <p>Error loading sections: {error.message}</p>;
-    }
-
     return (
         <div>
             <h3>Course Enrollment</h3>
+            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
             <ul>
-                {sections.map((section) => (
-                    <li key={section.secNo}>
-                        {section.courseId} - {section.title} - {section.instructorName}
-                        <button onClick={() => enrollInSection(section.secNo)}>Enroll</button>
-                    </li>
-                ))}
+                {sections.length > 0 ? (
+                    sections.map((section) => (
+                        <li key={section.secNo}>
+                            {section.courseId} - {section.title} - {section.instructorName}
+                            <button onClick={() => enrollInSection(section.secNo)}>Enroll</button>
+                        </li>
+                    ))
+                ) : (
+                    <p>No sections available for enrollment</p>
+                )}
             </ul>
         </div>
     );
