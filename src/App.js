@@ -39,7 +39,7 @@ const StudentComponent = ({ studentId }) => {
 };
 
 function App() {
-  const userType = 'STUDENT'; // change to INSTRUCTOR or STUDENT for testing.
+  const userType = 'ADMIN'; // change to INSTRUCTOR or STUDENT for testing.
   const studentId = 3;
 
   if (userType === 'ADMIN') {
