@@ -27,6 +27,7 @@ const SectionUpdate = (props)  => {
         setOpen(false);
         setSection({secNo:'', courseId:'', secId:'', year:'', semester:'', building:'', room:'', times:'',
             instructorName:'', instructorEmail:''});
+
         setEditMessage('');
     };
 
@@ -63,6 +64,7 @@ const SectionUpdate = (props)  => {
                 </DialogActions>
             </Dialog>
         </div>
+
     )
 }
 

@@ -79,6 +79,51 @@ function SectionsView(props) {
         }
     }
 
+    const saveSection = async (section) => {
+      try {
+        const response = await fetch (`${SERVER_URL}/sections`, 
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            }, 
+            body: JSON.stringify(section),
+          });
+        if (response.ok) {
+          setMessage("section saved");
+          fetchSections();
+        } else {
+          const rc = await response.json();
+          setMessage(rc.message);
+        }
+      } catch (err) {
+        setMessage("network error: "+err);
+      }
+    }
+
+    const addSection = async (section) => {
+      try {
+        const response = await fetch (`${SERVER_URL}/sections`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }, 
+            body: JSON.stringify(section),
+          });
+        if (response.ok) {
+          const rc = await response.json();
+          setMessage("section added secno="+rc.secNo);
+          fetchSections();
+        } else {
+          const rc = await response.json();
+          setMessage(rc.message);
+        }
+      } catch (err) {
+        setMessage("network error: "+err);
+      }
+    }
+
     const deleteSection = async (secNo) => {
         try {
             const response = await fetch (`${SERVER_URL}/sections/${secNo}`,

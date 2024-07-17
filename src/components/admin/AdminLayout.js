@@ -21,6 +21,7 @@ export const AdminLayout = () => {
                 <Link to="/sections" id="sections">Sections</Link>
             </nav>
 
+
             <Outlet />
         </>
     )
