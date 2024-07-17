@@ -5,28 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07265bf1-3825-4a6c-afdd-e36630a23a54" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/AdminLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/AdminLayout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/CourseAdd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/CourseAdd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/CourseUpdate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/CourseUpdate.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/CoursesView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/CoursesView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/SectionAdd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/SectionAdd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/SectionUpdate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/SectionUpdate.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/admin/SectionsView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/SectionsView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/UserAdd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/UserAdd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/UserUpdate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/UserUpdate.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/UsersView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/UsersView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/instructor/AssignmentAdd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/instructor/AssignmentAdd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/instructor/AssignmentGrade.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/instructor/AssignmentGrade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/instructor/AssignmentUpdate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/instructor/AssignmentUpdate.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/instructor/AssignmentsView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/instructor/AssignmentsView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/instructor/EnrollmentsView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/instructor/EnrollmentsView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/instructor/InstructorHome.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/instructor/InstructorHome.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/instructor/InstructorLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/instructor/InstructorLayout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/instructor/InstructorSectionsView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/instructor/InstructorSectionsView.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
