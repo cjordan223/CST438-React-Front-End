@@ -12,15 +12,15 @@ const SectionAdd = (props)  => {
     const [editMessage, setEditMessage] = useState('');
     const [section, setSection] = useState(
         {secNo:'', courseId:'', secId:'', year:'', semester:'', building:'', room:'', times:'',
-        instructorName:'', instructorEmail:''}
-     );
+            instructorName:'', instructorEmail:''}
+    );
 
     /*
      *  dialog for edit user
      */
     const clearData = () => {
         setSection( {secNo:'', courseId:'', secId:'', year:'', semester:'', building:'', room:'', times:'',
-        instructorName:'', instructorEmail:''});
+            instructorName:'', instructorEmail:''});
         setEditMessage('');
     }
 
@@ -50,6 +50,7 @@ const SectionAdd = (props)  => {
 
     return (
         <div>
+
         <Button id="addSection" onClick={editOpen}>Add Section</Button>
         <Dialog open={open} >
             <DialogTitle>Add Section</DialogTitle>

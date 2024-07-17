@@ -1,163 +1,152 @@
 import React, {useState, useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
-import { Button } from '@mui/material';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-import { confirmAlert } from 'react-confirm-alert';
+import {useLocation} from 'react-router-dom'
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import Button from '@mui/material/Button';
+import {SERVER_URL} from '../../Constants';
+import AssignmentAdd from './AssignmentAdd';
 import AssignmentUpdate from './AssignmentUpdate';
 import AssignmentGrade from './AssignmentGrade';
-import AssignmentAdd from './AssignmentAdd';
-import { SERVER_URL } from '../../Constants';
-
-// instructor views assignments for their section
-// use location to get the section value 
-// 
-// GET assignments using the URL /sections/{secNo}/assignments
-// returns a list of AssignmentDTOs
-// display a table with columns 
-// assignment id, title, dueDate and buttons to grade, edit, delete each assignment
 
 const AssignmentsView = (props) => {
 
     const [assignments, setAssignments] = useState([]);
     const [message, setMessage] = useState('');
-    
+
     const location = useLocation();
-    const {s} = location.state;
+    const {secNo, courseId, secId} = location.state;
+
 
     const fetchAssignments = async () => {
+
         try {
-            const response = await fetch(`${SERVER_URL}/sections/${s.secNo}/assignments`);
+            const response = await fetch(`${SERVER_URL}/sections/${secNo}/assignments`);
             if (response.ok) {
-                const assignments = await response.json();
-                setAssignments(assignments);
+                const data = await response.json();
+                setAssignments(data);
             } else {
-                const json = await response.json();
-                setMessage('Response error: ' +json.message);
+                const rc = await response.json();
+                setMessage("fetch error "+rc.message);
             }
         } catch (err) {
-            setMessage('Network error '+err);
+            setMessage("network error "+err);
         }
     }
 
-    useEffect( () => {
-        fetchAssignments();
+    useEffect(() => {
+        fetchAssignments()
     }, []);
 
-    const headers = ['Assignment ID', 'Title', 'Due Date', 'Section No', '', ''];
+    const add = (assignment) => {
+        assignment.courseId = courseId;
+        assignment.secId = secId;
+        assignment.secNo = secNo;
+        fetch (`${SERVER_URL}/assignments`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(assignment),
+            })
+            .then(response => response.json() )
+            .then(data => {
+                setMessage("Assignment created id="+data.id);
+                fetchAssignments();
+            })
+            .catch(err => setMessage(err));
+    }
 
-    const deleteAlert = (event) => {
+    const save = (assignment) => {
+        fetch (`${SERVER_URL}/assignments`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(assignment),
+            })
+            .then(response => response.json() )
+            .then(data => {
+                setMessage("Assignment saved");
+                fetchAssignments();
+            })
+            .catch(err => setMessage(err));
+    }
+
+
+    const doDelete = (e) => {
+        const row_idx = e.target.parentNode.parentNode.rowIndex - 1;
+        const id = assignments[row_idx].id;
+        fetch (`${SERVER_URL}/assignments/${id}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    setMessage("Assignment deleted");
+                    fetchAssignments();
+                } else {
+                    setMessage("Delete failed");
+                }
+
+            })
+            .catch(err => setMessage(err));
+    }
+
+    const onDelete = (e) => {
         confirmAlert({
-            title: 'Confirm delete',
+            title: 'Confirm to delete',
             message: 'Do you really want to delete?',
             buttons: [
                 {
                     label: 'Yes',
-                    onClick: () => doDelete(event)
+                    onClick: () => doDelete(e)
                 },
                 {
-                    label: 'No'
+                    label: 'No',
                 }
             ]
         });
     }
 
-    const doDelete = (event) => {
-        const row_index = event.target.parentNode.parentNode.rowIndex -1;
-        deleteAssignment(assignments[row_index].id);
-    }
-
-    const deleteAssignment = async (id) => {
-        try {
-            const response = await fetch (`${SERVER_URL}/assignments/${id}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                });
-            if (response.ok) {
-                setMessage('Assignment deleted');
-                fetchAssignments();
-            } else {
-                const rc = await response.json();
-                setMessage("Delete failed " +rc.message);
-            } 
-        } catch (err) {
-            setMessage("Network error: " + err);
-        }
-    }
-
-    
-    const onSave = async (assignment) => {
-        try {
-            const response = await fetch(`${SERVER_URL}/assignments`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(assignment),
-                });
-            if (response.ok) {
-                setMessage("Course Saved");
-                fetchAssignments();
-            } else {
-                const json = await response.json();
-                setMessage('Response error: ' + json.message);
-            }
-        } catch (err) {
-            setMessage('Network error: ' + err);
-        }
-    }
-
-    const addAssignment = async (assignment) => {
-        try {
-            const response = await fetch(`${SERVER_URL}/assignments`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(assignment),
-                });
-            if (response.ok) {
-                setMessage("Assignment Added");
-                fetchAssignments();
-            } else {
-                const rc = await response.json();
-                setMessage(rc.message);
-            }
-        } catch (err) {
-            setMessage("Network error: " + err);
-        }
-    }
+    const headers = ['id', 'Title', 'Due Date', '', '', ''];
 
     return(
-        <> 
-        <h3> Assignment List </h3>
-        <h4>{message}</h4>
-        <table className='Center'>
-            <thead>
-                <tr>
-                    {headers.map((h, idx) => <th key={idx}>{h}</th>)}
-                </tr>
-            </thead>
-            <tbody>
-                {assignments.map((assignment) => 
-                <tr key={assignment.id}>
-                    <td>{assignment.id}</td>
-                    <td>{assignment.title}</td>
-                    <td>{assignment.dueDate}</td>
-                    <td>{assignment.secNo}</td>
-                    <td><AssignmentGrade assignment={assignment} save={onSave}/></td>
-                    <td><AssignmentUpdate assignment={assignment} save={onSave}/></td>
-                    <td><Button onClick={deleteAlert}>Delete</Button></td>
-                </tr>
-                )}
-            </tbody>
-        </table>
-        <AssignmentAdd section={s} save={addAssignment}/>
-        </>
+        <div>
+            <h3>{message}</h3>
+
+            { assignments.length > 0 &&
+                <>
+                    <h3>{courseId}-{secId} Assignments</h3>
+
+                    <table className="Center" >
+                        <thead>
+                        <tr>
+                            {headers.map((s, idx) => (<th key={idx}>{s}</th>))}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {assignments.map((a) => (
+                            <tr key={a.id}>
+                                <td>{a.id}</td>
+                                <td>{a.title}</td>
+                                <td>{a.dueDate}</td>
+                                <td><AssignmentGrade assignment={a} /></td>
+                                <td><AssignmentUpdate assignment={a} save={save} /></td>
+                                <td><Button onClick={onDelete}>Delete</Button></td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </>
+            }
+
+            <AssignmentAdd save={add} />
+        </div>
     );
 }
 
