@@ -24,7 +24,7 @@ const CourseUpdate = (props)  => {
     const editClose = () => {
         setOpen(false);
         setCourse({courseId:'', title:'', credits:''});
-        
+
     };
 
     const editChange = (event) => {
@@ -53,16 +53,16 @@ const CourseUpdate = (props)  => {
                 <DialogTitle>Edit Course</DialogTitle>
                 <DialogContent  style={{paddingTop: 20}} >
                     <h4>{editMessage}</h4>
-                    <TextField style={{padding:10}} autoFocus fullWidth label="courseId" name="courseId" value={course.courseId}  InputProps={{readOnly: true, }}  /> 
-                    <TextField style={{padding:10}} fullWidth label="title" name="title" value={course.title} onChange={editChange}  /> 
-                    <TextField style={{padding:10}} fullWidth label="credits" name="credits" value={course.credits} onChange={editChange}  /> 
+                    <TextField style={{padding:10}} autoFocus fullWidth label="courseId" name="courseId" value={course.courseId}  InputProps={{readOnly: true, }}  />
+                    <TextField style={{padding:10}} fullWidth label="title" name="title" value={course.title} onChange={editChange}  />
+                    <TextField style={{padding:10}} fullWidth label="credits" name="credits" value={course.credits} onChange={editChange}  />
                 </DialogContent>
                 <DialogActions>
                     <Button color="secondary" onClick={editClose}>Close</Button>
                     <Button color="primary" onClick={onSave}>Save</Button>
                 </DialogActions>
-            </Dialog> 
-        </>                       
+            </Dialog>
+        </>
     )
 }
 
