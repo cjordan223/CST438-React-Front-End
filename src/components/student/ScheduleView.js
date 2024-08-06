@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import {SERVER_URL} from '../../Constants';
 
 const ScheduleView = ({ studentId, refresh }) => {
+    const { user } = useOutletContext();
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchSchedule = () => {
-        fetch(`http://localhost:8080/transcripts?studentId=${studentId}`)
+    const fetchSchedule = async () => {
+        const jwt = sessionStorage.getItem('jwt');
+        await fetch(`${SERVER_URL}/transcripts`, {
+            headers: {
+                'Authorization': jwt,
+            },
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch schedule');
@@ -27,9 +35,14 @@ const ScheduleView = ({ studentId, refresh }) => {
         fetchSchedule();
     }, [refresh]); // only listen to refresh to trigger refetch
 
-    const dropCourse = (enrollmentId) => {
-        fetch(`http://localhost:8080/enrollments/${enrollmentId}`, {
+    const dropCourse = async (enrollmentId) => {
+        const jwt = sessionStorage.getItem('jwt');
+       await fetch(`${SERVER_URL}/enrollments/${enrollmentId}?studentId=${user.studentId}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': jwt,
+
+            },
         })
             .then(response => {
                 if (!response.ok) {
