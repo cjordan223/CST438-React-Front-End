@@ -22,9 +22,9 @@ const Login = (props) => {
       if (response.ok) {
         const json = await response.json();
         sessionStorage.setItem("jwt", 'Bearer ' + json.jwt);
-        sessionStorage.setItem("user", JSON.stringify(user)); // Store user object
-        props.setUserType(json.role);
-        props.setAuth(true);
+        sessionStorage.setItem("userType", json.role); // Store user type
+        props.setUserType(json.role); // Set user type in parent component
+        props.setAuth(true); // Set authentication state
         setMessage('');
       } else {
         setMessage("response error: " + response.status);
@@ -35,23 +35,23 @@ const Login = (props) => {
   }
 
   return (
-    <div className="App">
-      <h4>{message}</h4>
-      <table className="Center">
-        <tbody>
+      <div className="App">
+        <h4>{message}</h4>
+        <table className="Center">
+          <tbody>
           <tr>
             <td> <label htmlFor="username">UserName</label> </td>
             <td> <input type="text" name="username" value={user.username} onChange={onChange} />  </td>
           </tr>
           <tr>
             <td> <label htmlFor="password">Password</label></td>
-            <td> <input type="text" name="password" value={user.password} onChange={onChange} /> </td>
+            <td> <input type="password" name="password" value={user.password} onChange={onChange} /> </td>
           </tr>
-        </tbody>
-      </table>
-      <br />
-      <button id="submit" onClick={login}>Login</button>
-    </div>
+          </tbody>
+        </table>
+        <br />
+        <button id="submit" onClick={login}>Login</button>
+      </div>
   );
 }
 
