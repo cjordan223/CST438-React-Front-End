@@ -22,6 +22,7 @@ const Login = (props) => {
       if (response.ok) {
         const json = await response.json();
         sessionStorage.setItem("jwt", 'Bearer ' + json.jwt);
+        sessionStorage.setItem("user", JSON.stringify(user)); // Store user object
         sessionStorage.setItem("userType", json.role); // Store user type
         props.setUserType(json.role); // Set user type in parent component
         props.setAuth(true); // Set authentication state
