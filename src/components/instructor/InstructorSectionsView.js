@@ -1,51 +1,53 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import {useLocation} from 'react-router-dom';
-import {SERVER_URL} from '../../Constants';
-
+import { useLocation } from 'react-router-dom';
+import { SERVER_URL } from '../../Constants';
 
 const InstructorSectionsView = (props) => {
-
     const [sections, setSections] = useState([]);
     const [message, setMessage] = useState('');
 
     const location = useLocation();
-    const {year, semester} = location.state;
+    const { year, semester } = location.state;
 
     const fetchSections = async (year, semester) => {
-        if (!year || year==='' || !semester || semester==='') {
-            setMessage("enter year and semester")
+        if (!year || year === '' || !semester || semester === '') {
+            setMessage("Enter year and semester");
+            return;
         }
         try {
-            const response = await fetch(`${SERVER_URL}/sections?email=dwisneski@csumb.edu&year=${year}&semester=${semester}`);
+            const response = await fetch(`${SERVER_URL}/sections?year=${year}&semester=${semester}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': sessionStorage.getItem('jwt')
+                }
+            });
+
             if (response.ok) {
                 const data = await response.json();
                 setSections(data);
             } else {
-                const rc = await response.json();
-                setMessage(rc.message);
+                setMessage("Failed to fetch sections");
             }
-        } catch(err) {
-            setMessage("network error "+err);
+        } catch (err) {
+            setMessage("Network error: " + err.message);
         }
     }
 
-    useEffect( () => {
+    useEffect(() => {
         fetchSections(year, semester);
-    }, [year, semester ]);
+    }, [year, semester]);
 
     const headers = ['secNo', 'course id', 'sec id', 'building', 'room', 'times', '', ''];
 
-
-
-    return(
+    return (
         <div>
             <h3>{message}</h3>
-            { sections.length > 0 &&
+            {sections.length > 0 &&
                 <>
-                    <h3>Sections {year} {semester} </h3>
-
-                    <table className="Center" >
+                    <h3>Sections {year} {semester}</h3>
+                    <table className="Center">
                         <thead>
                         <tr>
                             {headers.map((s, idx) => (<th key={idx}>{s}</th>))}
@@ -73,4 +75,3 @@ const InstructorSectionsView = (props) => {
 }
 
 export default InstructorSectionsView;
-
