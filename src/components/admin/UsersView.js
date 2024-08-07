@@ -15,7 +15,14 @@ function UsersView(props) {
 
     const  fetchUsers = async () => {
         try {
-            const response = await fetch(`${SERVER_URL}/users`);
+            const token = sessionStorage.getItem('jwt');
+            const response = await fetch(`${SERVER_URL}/users`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+        });
             if (response.ok) {
                 const users = await response.json();
                 setUsers(users);
@@ -34,11 +41,13 @@ function UsersView(props) {
 
     const saveUser = async (user) => {
         try {
+            const token = sessionStorage.getItem('jwt');
             const response = await fetch(`${SERVER_URL}/users`,
                 {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                     body: JSON.stringify(user),
                 });
@@ -56,11 +65,13 @@ function UsersView(props) {
 
     const addUser = async (user) => {
         try {
+            const token = sessionStorage.getItem('jwt');
             const response = await  fetch(`${SERVER_URL}/users`,
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                     body: JSON.stringify(user),
                 });
@@ -79,11 +90,13 @@ function UsersView(props) {
 
     const deleteUser = async (id) => {
         try {
+            const token = sessionStorage.getItem('jwt');
             const response = await fetch(`${SERVER_URL}/users/${id}`,
                 {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                 });
             if (response.ok) {
