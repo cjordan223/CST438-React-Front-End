@@ -58,7 +58,7 @@ const AssignmentsView = (props) => {
             if (response.ok) {
                 const data = await response.json();
                 setMessage("Assignment created id=" + data.id);
-                fetchAssignments();
+                fetchAssignments(); // This should be fine here
             } else {
                 const rc = await response.json();
                 setMessage("create error " + rc.message);
@@ -81,7 +81,7 @@ const AssignmentsView = (props) => {
             });
             if (response.ok) {
                 setMessage("Assignment saved");
-                fetchAssignments();
+                fetchAssignments(); // This should be fine here
             } else {
                 const rc = await response.json();
                 setMessage("save error " + rc.message);
@@ -92,7 +92,7 @@ const AssignmentsView = (props) => {
     }
 
     const doDelete = async (e) => {
-        const row_idx = e.target.parentNode.parentNode.rowIndex - 1;
+        const row_idx = e.target.closest('tr').rowIndex - 1;
         const id = assignments[row_idx].id;
         try {
             const token = sessionStorage.getItem("jwt");
@@ -104,13 +104,10 @@ const AssignmentsView = (props) => {
                 },
             });
             if (response.ok) {
-                setMessage("Assignment deleted");
-                fetchAssignments();
-            } else {
-                setMessage("Delete failed");
+                fetchAssignments(); // Refresh the assignments list
             }
         } catch (err) {
-            setMessage("network error " + err);
+            console.error("network error " + err); // Log the error instead of setting the message
         }
     }
 
