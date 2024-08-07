@@ -15,10 +15,18 @@ function CoursesView(props) {
 
     const  fetchCourses = async () => {
         try {
-            const response = await fetch(`${SERVER_URL}/courses`);
+            const token = sessionStorage.getItem('jwt');
+            const response = await fetch(`${SERVER_URL}/courses`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            });
             if (response.ok) {
-                const courses = await response.json();
-                setCourses(courses);
+                const data = await response.json();
+                setCourses(data);
             } else {
                 const json = await response.json();
                 setMessage("response error: "+json.message);
@@ -34,11 +42,13 @@ function CoursesView(props) {
 
     const saveCourse = async (course) => {
         try {
+            const token = sessionStorage.getItem("jwt");
             const response = await fetch (`${SERVER_URL}/courses`,
                 {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                     body: JSON.stringify(course),
                 });
@@ -56,11 +66,13 @@ function CoursesView(props) {
 
     const addCourse = async (course) => {
         try {
+            const token = sessionStorage.getItem("jwt");
             const response = await fetch (`${SERVER_URL}/courses`,
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                     body: JSON.stringify(course),
                 });
@@ -78,11 +90,13 @@ function CoursesView(props) {
 
     const deleteCourse = async (courseId) => {
         try {
+            const token = sessionStorage.getItem("jwt");
             const response = await fetch (`${SERVER_URL}/courses/${courseId}`,
                 {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                 });
             if (response.ok) {

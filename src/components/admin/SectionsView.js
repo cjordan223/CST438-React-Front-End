@@ -20,7 +20,14 @@ function SectionsView(props) {
             setMessage("Enter search parameters");
         } else {
             try {
-                const response = await fetch(`${SERVER_URL}/courses/${search.courseId}/sections?year=${search.year}&semester=${search.semester}`);
+                const token = sessionStorage.getItem('jwt');
+                const response = await fetch(`${SERVER_URL}/courses/${search.courseId}/sections?year=${search.year}&semester=${search.semester}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    }
+            });
                 if (response.ok) {
                     const data = await response.json();
                     setSections(data);
@@ -36,11 +43,13 @@ function SectionsView(props) {
 
     const saveSection = async (section) => {
         try {
+            const token = sessionStorage.getItem('jwt');
             const response = await fetch (`${SERVER_URL}/sections`,
                 {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                     body: JSON.stringify(section),
                 });
@@ -58,11 +67,13 @@ function SectionsView(props) {
 
     const addSection = async (section) => {
         try {
+            const token = sessionStorage.getItem('jwt');
             const response = await fetch (`${SERVER_URL}/sections`,
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                     body: JSON.stringify(section),
                 });
@@ -81,11 +92,13 @@ function SectionsView(props) {
 
     const deleteSection = async (secNo) => {
         try {
+            const token = sessionStorage.getItem('jwt');
             const response = await fetch (`${SERVER_URL}/sections/${secNo}`,
                 {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                 });
             if (response.ok) {
