@@ -13,7 +13,7 @@ A comprehensive SRS for the entire project can be found [here](https://drive.goo
 
 ## Getting Started: 
 #### As a precursor you should have the backend running already and listening on 8080.
-Detailed instructions can be found on the backend repo [here](https://github.com/cjordan223/CST438-Assignment2).
+Detailed instructions can be found on the backend repo [here]([https://github.com/cjordan223/CST438-Assignment2](https://github.com/cjordan223/CST438-React-FrontEnd)).
 
 ## Prerequisites:
 
