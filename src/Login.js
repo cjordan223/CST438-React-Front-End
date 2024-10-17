@@ -9,31 +9,34 @@ const Login = (props) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   }
 
-  const login = async () => {
-    const basicu = 'Basic ' + btoa(user.username + ':' + user.password);
-    try {
-      const response = await fetch(`${SERVER_URL}/login`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': basicu
-        }
-      });
-      if (response.ok) {
-        const json = await response.json();
-        sessionStorage.setItem("jwt", 'Bearer ' + json.jwt);
-        sessionStorage.setItem("user", JSON.stringify(user)); // Store user object
-        sessionStorage.setItem("userType", json.role); // Store user type
-        props.setUserType(json.role); // Set user type in parent component
-        props.setAuth(true); // Set authentication state
-        setMessage('');
-      } else {
-        setMessage("response error: " + response.status);
+const login = async () => {
+  const basicu = 'Basic ' + btoa(user.username + ':' + user.password);
+  try {
+    const response = await fetch(`${SERVER_URL}/login`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': basicu
       }
-    } catch (err) {
-      setMessage("network error: " + err);
+    });
+    if (response.ok) {
+      const json = await response.json();
+      sessionStorage.setItem("jwt", 'Bearer ' + json.jwt);
+      sessionStorage.setItem("user", JSON.stringify(user)); // Store user object
+      sessionStorage.setItem("userType", json.role); // Store user type
+      props.setUserType(json.role); // Set user type in parent component
+      props.setAuth(true); // Set authentication state
+      setMessage('');
+    } else {
+      const text = await response.text(); // Get the response text
+      console.error("Response error:", text); // Log the response text
+      setMessage("response error: " + response.status);
     }
+  } catch (err) {
+    console.error("Network error:", err); // Log the network error
+    setMessage("network error: " + err);
   }
+}
 
   return (
       <div className="App">
